@@ -162,3 +162,4 @@ cython_debug/
 .idea/
 .git/
 .pytest_cache/
+/план_реализации.txt
