@@ -1,2 +1,0 @@
-class VacancyHH():
-    pass
