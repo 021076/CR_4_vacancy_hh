@@ -15,37 +15,28 @@ class HeadHunterAPI(VacanciesAPI):
     def get_areas(self, find_area):
         """ Получение базы регионов и создание справочника регионов формата 'name:id'"""
         area_respose = requests.get("https://api.hh.ru/areas/")
-        try:
-            if area_respose.status_code != 200:
-                raise Exception(f'Ошибка код {area_respose.status_code}: {area_respose.json()}')
-        except Exception:
-            raise
-        else:
-            if area_respose.json() == []:
-                return f'Не удалось получить список регионов'
-            else:
-                hh_areas = area_respose.json()
-                areas_list = []
-                for area_level_1 in hh_areas:
-                    dict_area_level_1 = {area_level_1["name"]: area_level_1["id"]}
-                    areas_list.append(dict_area_level_1)
-                    if area_level_1["areas"] != []:
-                        areas_1 = area_level_1["areas"]
-                        for area_level_2 in areas_1:
-                            dict_area_level_2 = {area_level_2["name"]: area_level_2["id"]}
-                            areas_list.append(dict_area_level_2)
-                            if area_level_2["areas"] != []:
-                                areas_2 = area_level_2["areas"]
-                                for area_level_3 in areas_2:
-                                    dict_area_level_3 = {area_level_3["name"]: area_level_3["id"]}
-                                    areas_list.append(dict_area_level_3)
+        hh_areas = area_respose.json()
+        areas_list = []
+        for area_level_1 in hh_areas:
+            dict_area_level_1 = {area_level_1["name"]: area_level_1["id"]}
+            areas_list.append(dict_area_level_1)
+            if area_level_1["areas"] != []:
+                areas_1 = area_level_1["areas"]
+                for area_level_2 in areas_1:
+                    dict_area_level_2 = {area_level_2["name"]: area_level_2["id"]}
+                    areas_list.append(dict_area_level_2)
+                    if area_level_2["areas"] != []:
+                        areas_2 = area_level_2["areas"]
+                        for area_level_3 in areas_2:
+                            dict_area_level_3 = {area_level_3["name"]: area_level_3["id"]}
+                            areas_list.append(dict_area_level_3)
 
-                for df in areas_list:
-                    for k, v in df.items():
-                        if k == find_area:
-                            return (v)
-                        elif k == None:
-                            return ("")
+        for df in areas_list:
+            for k, v in df.items():
+                if k == find_area:
+                    return (v)
+                elif k == None:
+                    return ("")
 
     def get_vacancies(self, text, with_salary_param, area_id):
         """ Получение базы вакансий по параметрам
@@ -58,12 +49,15 @@ class HeadHunterAPI(VacanciesAPI):
         hh_response = requests.get("https://api.hh.ru/vacancies/", self.params)
         try:
             if hh_response.status_code != 200:
-                raise Exception(f'Ошибка код {hh_response.status_code}: {hh_response.json()}')
+                raise Exception(f'Ошибка {hh_response.status_code}: {hh_response.json()}')
         except Exception:
             raise
         else:
-            if hh_response.json()["items"] == []:
-                return f'Вакансии не найдены'
+            try:
+                if hh_response.json()["items"] == []:
+                    raise AssertionError(f'Вакансии не найдены')
+            except Exception:
+                raise
             else:
                 # return json.dumps(hh_response.json()["items"], indent=2, ensure_ascii=False)
                 return hh_response.json()["items"]
