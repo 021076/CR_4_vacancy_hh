@@ -65,4 +65,9 @@ class DataVacanciesJson(DataVacancies):
 
     def delete_vacancies(self):
         """Удаление данных из файла json"""
-        open(self.json_file, 'w').close()
+        try:
+            open(self.json_file)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Файл {self.json_file} не найден")
+        else:
+            open(self.json_file, "w").close()
