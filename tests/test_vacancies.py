@@ -60,7 +60,7 @@ def test_repr():
 
 
 def test_uniform_salary():
-    # Проверка нормализации данных по зарплате, есди from или to None
+    # Проверка нормализации данных по зарплате, есkи from или to None
     VacanciesHH.init_from_jsonfile(salary_vacancies)
     for vac in VacanciesHH.all:
         VacanciesHH.uniform_salary(vac)

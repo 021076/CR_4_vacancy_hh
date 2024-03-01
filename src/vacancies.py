@@ -1,4 +1,4 @@
-class VacanciesHH():
+class VacanciesHH:
     """Класс для создания и работы с объектами вакансиями"""
     all = []
 
@@ -15,7 +15,7 @@ class VacanciesHH():
         self.all.append(self)
 
     @classmethod
-    def init_from_jsonfile(cls, data_vacancies):
+    def init_from_jsonfile(cls, data_vacancies: list):
         """Класс-метод для создания объектов из полученной БД вакансий"""
         cls.all.clear()
         for vacancy in data_vacancies:
@@ -26,7 +26,7 @@ class VacanciesHH():
                 url)
 
     @staticmethod
-    def currency_rate(noruscost, currency):
+    def currency_rate(noruscost: int, currency: str):
         """Статметод для перевода валюты в рубли """
         rate = {"AZN": 0.027728, "BYR": 0.042685, "EUR": 0.015982, "GEL": 0.0344, "KGS": 1.356611, "KZT": 7.809145,
                 "RUR": 1, "UAH": 0.596833, "USD": 0.016311, "UZS": 177.916948}
@@ -42,11 +42,10 @@ class VacanciesHH():
                         self.currency_rate(self.salary["from"], self.salary["currency"]))
                     self.salary["to"] = int(
                         self.currency_rate(self.salary["to"], self.salary["currency"]))
-                elif self.salary["from"] == None and self.salary["to"]:
+                elif self.salary["from"] is None and self.salary["to"]:
                     self.salary["to"] = int(
                         self.currency_rate(self.salary["to"], self.salary["currency"]))
-                    # self.salary["from"] = int(self.salary["to"])
-                elif self.salary["from"] and self.salary["to"] == None:
+                elif self.salary["from"] and self.salary["to"] is None:
                     self.salary["from"] = int(
                         self.currency_rate(self.salary["from"], self.salary["currency"]))
             self.salary["currency"] = "RUR"
@@ -54,19 +53,14 @@ class VacanciesHH():
     def __str__(self):
         """Вывод данных о вакансии в удобном для чтения формате"""
         salary_cost = ""
-        salary_currency = ""
-        if self.salary == None or (self.salary["from"] == None and self.salary["to"] == None):
+        if self.salary is None or (self.salary["from"] is None and self.salary["to"] is None):
             salary_cost = "не указана"
         elif self.salary["from"] and self.salary["to"] and self.salary["from"] != self.salary["to"]:
             salary_cost = f'от {self.salary["from"]} до {self.salary["to"]}'
-        elif self.salary["from"] and self.salary["to"] == None:
+        elif self.salary["from"] and self.salary["to"] is None:
             salary_cost = f'от {self.salary["from"]}'
-        elif (self.salary["from"] == None and self.salary["to"]) or self.salary["from"] == self.salary["to"]:
+        elif (self.salary["from"] is None and self.salary["to"]) or self.salary["from"] == self.salary["to"]:
             salary_cost = f'до {self.salary["to"]}'
-        elif self.salary["currency"] == "RUR":
-            salary_currency = "RUR"
-        elif self.salary["currency"] != "RUR":
-            salary_currency = f'{self.salary["currency"]}'
         return (
             f'Название вакансии: {self.name}, город: {self.area}, режим работы: {self.schedule},\n'
             f'требования: {self.snippet_req},\n'
@@ -75,13 +69,13 @@ class VacanciesHH():
 
     def __repr__(self):
         """Информация об объекте класса в режиме отладки"""
-        return (f"{self.__class__.__name__}: {self.name}, {self.url}")
+        return f"{self.__class__.__name__}: {self.name}, {self.url}"
 
     def uniform_salary(self):
         """Приведение данных о зарплате к удобному виду для сортировки и фильтрации"""
-        if self.salary["from"] == None and self.salary["to"]:
+        if self.salary["from"] is None and self.salary["to"]:
             self.salary["from"] = int(self.salary["to"])
-        if self.salary["from"] and self.salary["to"] == None:
+        if self.salary["from"] and self.salary["to"] is None:
             self.salary["to"] = int(self.salary["from"])
 
     def __len__(self):

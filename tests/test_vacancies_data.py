@@ -21,7 +21,7 @@ def test_save_vacancies():
     # сохранение данных в файл
     data_vacancies.save_vacancies(bd_hh)
     # проверка, что файл существует
-    assert os.path.exists(DataVacanciesJson.json_file) == True
+    assert os.path.exists(DataVacanciesJson.json_file)
 
 
 def test_read_from_json():
