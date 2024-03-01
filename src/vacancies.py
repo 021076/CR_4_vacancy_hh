@@ -57,11 +57,11 @@ class VacanciesHH():
         salary_currency = ""
         if self.salary == None or (self.salary["from"] == None and self.salary["to"] == None):
             salary_cost = "не указана"
-        elif self.salary["from"] and self.salary["to"]:
+        elif self.salary["from"] and self.salary["to"] and self.salary["from"] != self.salary["to"]:
             salary_cost = f'от {self.salary["from"]} до {self.salary["to"]}'
         elif self.salary["from"] and self.salary["to"] == None:
             salary_cost = f'от {self.salary["from"]}'
-        elif self.salary["from"] == None and self.salary["to"]:
+        elif (self.salary["from"] == None and self.salary["to"]) or self.salary["from"] == self.salary["to"]:
             salary_cost = f'до {self.salary["to"]}'
         elif self.salary["currency"] == "RUR":
             salary_currency = "RUR"
@@ -71,7 +71,7 @@ class VacanciesHH():
             f'Название вакансии: {self.name}, город: {self.area}, режим работы: {self.schedule},\n'
             f'требования: {self.snippet_req},\n'
             f'cсылка на вакансию: {self.url}\n'
-            f'зарплата: {salary_cost} {salary_currency}\n------------------------------')
+            f'зарплата: {salary_cost} {self.salary["currency"]}\n------------------------------')
 
     def __repr__(self):
         """Информация об объекте класса в режиме отладки"""
