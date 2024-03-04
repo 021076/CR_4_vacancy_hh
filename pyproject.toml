@@ -2,13 +2,18 @@
 name = "cr-4-vacancy_hh"
 version = "0.1.0"
 description = ""
-authors = [""ro_k_ <ro_k_sana@mail.ru>""]
+authors = ["ro_k_ <ro_k_sana@mail.ru>"]
 readme = "README.md"
 packages = [{include = "cr_4_vacancy_hh"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.2"
+pytest-cov = "^4.1.0"
+requests = "^2.31.0"
 
 [build-system]
 requires = ["poetry-core"]
